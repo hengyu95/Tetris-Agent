@@ -39,7 +39,7 @@ public class GeneticTrainer extends Trainer {
             for (int j = 0; j < 4; j++) {
                 array[j] = r.nextDouble() * 10 - 10;      //random values from -10 to 10
             }
-            
+
             array[4] = -100000000;
 
             population.add(array);
@@ -50,8 +50,6 @@ public class GeneticTrainer extends Trainer {
     void geneticTrain(ArrayList<double[]> startingWeights) {
 
         Random r = new Random();
-
-        ZonedDateTime now = ZonedDateTime.now();
 
         while (mostRowsCleared < 10000) {
             double[] parent1 = randomSelection(startingWeights);
@@ -76,9 +74,9 @@ public class GeneticTrainer extends Trainer {
             }
         }
 
-        long seconds = now.until(ZonedDateTime.now(), ChronoUnit.SECONDS);
+
         System.out.println("Best configuration was " + bestConfiguration + " which cleared " + mostRowsCleared + ".");
-        System.out.println(seconds + " seconds.");
+
 
     }
 
@@ -226,6 +224,8 @@ public class GeneticTrainer extends Trainer {
 
     public void run() {
 
+        ZonedDateTime now = ZonedDateTime.now();
+
         generateInitWeights();
 
         for (int i = 0; i < population.size(); i++) {
@@ -238,5 +238,8 @@ public class GeneticTrainer extends Trainer {
         }
 
         geneticTrain(population);
+
+        long seconds = now.until(ZonedDateTime.now(), ChronoUnit.SECONDS);
+        System.out.println(seconds + " seconds.");
     }
 }
