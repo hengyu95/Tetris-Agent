@@ -36,10 +36,10 @@ public class GeneticTrainer extends Trainer {
         for (int i = 0; i < 300; i++) {
             double[] array = new double[6];
 
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < 4; j++) {
                 array[j] = r.nextDouble() * 10 - 10;      //random values from -10 to 10
             }
-            array[3] = r.nextDouble() * 10;
+            
             array[4] = -100000000;
 
             population.add(array);
@@ -53,7 +53,7 @@ public class GeneticTrainer extends Trainer {
 
         ZonedDateTime now = ZonedDateTime.now();
 
-        while (mostRowsCleared < 5000) {
+        while (mostRowsCleared < 10000) {
             double[] parent1 = randomSelection(startingWeights);
             double[] parent2 = randomSelection(startingWeights);
             double[] child = reproduce(parent1, parent2);
@@ -189,29 +189,6 @@ public class GeneticTrainer extends Trainer {
 
         return population.get(maxIndex);
 
-
-  /*      for (int i = population.size() - 1; i >= 0; i--) {
-            double[] test = population.get(i);
-
-
-            if (r.nextDouble() <= test[5] / totalScore) {
-                try {
-                    fw.write("Parent chosen: " + i + "\r\n");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return test;
-            }
-
-        }
-
-        try {
-            fw.write("Parent randomly chosen! \r\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return population.get(r.nextInt(population.size()));
-        //if all else fails, randomly pick one.*/
     }
 
 
