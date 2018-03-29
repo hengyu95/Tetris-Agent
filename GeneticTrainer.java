@@ -31,14 +31,15 @@ public class GeneticTrainer extends Trainer {
 
     void generateInitWeights() {
 
-        for (int i = 0; i < 500; i++) {
+        Random r = new Random();
+
+        for (int i = 0; i < 300; i++) {
             double[] array = new double[6];
 
-            for (int j = 0; j < 4; j++) {
-                Random r = new Random();
-                array[j] = r.nextDouble() * 20 - 10;      //random values from -10 to 10
+            for (int j = 0; j < 3; j++) {
+                array[j] = r.nextDouble() * 10 - 10;      //random values from -10 to 10
             }
-
+            array[3] = r.nextDouble() * 10;
             array[4] = -100000000;
 
             population.add(array);
@@ -79,7 +80,7 @@ public class GeneticTrainer extends Trainer {
             System.out.println(bestPerf + " " + totalScore);
             population.add(child);
 
-            if (population.size() > 800) {
+            if (population.size() > 400) {
                 cull(population);
             }
         }
@@ -89,9 +90,10 @@ public class GeneticTrainer extends Trainer {
         System.out.println(seconds);
     }
 
-    void cull(ArrayList<double[]> population) {
+    void
+    cull(ArrayList<double[]> population) {
 
-        for (int i = 0; i < 300; i++) {
+        for (int i = 0; i < 100; i++) {
 
             double minScore = Integer.MAX_VALUE;
             int minIndex = -1;
@@ -122,19 +124,13 @@ public class GeneticTrainer extends Trainer {
 
 
     double[] reproduce(double[] parent1, double[] parent2) {
-
-        Random r = new Random();
         double[] child = new double[6];
-
-        int j = r.nextInt(5);
+        double weight1 = parent1[5] / (parent1[5] + parent2[5]);
+        double weight2 = parent2[5] / (parent1[5] + parent2[5]);
 
         for (int i = 0; i < 5; i++) {
 
-            if (i < j)
-                child[i] = parent1[i];
-
-            else
-                child[i] = parent2[i];
+            child[i] = parent1[i] * weight1 + parent2[i] * weight2;
         }
 
      /*   try {
@@ -154,7 +150,7 @@ public class GeneticTrainer extends Trainer {
         double maxScore = 0;
         int maxIndex = 0;
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 0.1 * (population.size()); i++) {
 
             int select = r.nextInt(population.size());
             double[] selected = population.get(select);
@@ -205,10 +201,11 @@ public class GeneticTrainer extends Trainer {
 
     public void getFitness(double[] weights) throws IOException {
 
-
         int temp = 0;
 
         for (int i = 0; i < 2; i++) {
+            Heuristics.setWeights(weights[0], weights[1], weights[2], weights[3]);
+
             temp += simulateConfiguration(weights[0], weights[1], weights[2], weights[3]);
         }
 

@@ -14,7 +14,7 @@ public class Heuristics {
     private static Heuristics instance;
 
     // object variables
-    private double[] weights = {
+    private static double[] weights = {
         -30, -2, -3, -4, -100000000
     };
 
@@ -25,7 +25,7 @@ public class Heuristics {
         features = new int[NUM_FEATURES];
     }
 
-    public void setWeights(double numHolesWeight, double heightDiffWeight, double maxHeightWeight, double rowsClearedWeight) {
+    public static void setWeights(double numHolesWeight, double heightDiffWeight, double maxHeightWeight, double rowsClearedWeight) {
         weights[INDEX_NUMHOLES] = numHolesWeight;
         weights[INDEX_HEIGHT_DIFF] = heightDiffWeight;
         weights[INDEX_MAX_HEIGHT] = maxHeightWeight;

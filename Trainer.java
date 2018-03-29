@@ -25,7 +25,8 @@ public class Trainer {
     }
 
     // Within one configuration of weights
-    protected static int simulateConfiguration(double numHolesWeight, double heightDiffWeight, double maxHeightWeight, double rowsClearedWeight) {
+    protected static int simulateConfiguration(double numHolesWeight, double heightDiffWeight, double maxHeightWeight,
+                                               double rowsClearedWeight) {
        // System.out.print("[" + numHolesWeight + ", " + heightDiffWeight + ", " + maxHeightWeight + ", " + rowsClearedWeight + "]");
         int currentRowsCleared = getRowsClearedFromSimulation();
         System.out.println("Rows cleared = " + currentRowsCleared);
