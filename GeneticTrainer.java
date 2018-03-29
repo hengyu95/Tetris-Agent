@@ -60,15 +60,6 @@ public class GeneticTrainer extends Trainer {
 
             if (r.nextDouble() <= 0.05) {
                 mutate(child);
-                try {
-                    fw.write("Mutate! \r\n");
-          /*        fw.write((child[0] + " " + child[1] + " " + child[2] + " " + child[3] + " " + child[4] + " " +
-                         child[5]) + "\r\n");
-             */
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("Mutate!");
             }
 
             try {
@@ -86,12 +77,12 @@ public class GeneticTrainer extends Trainer {
         }
 
         long seconds = now.until(ZonedDateTime.now(), ChronoUnit.SECONDS);
+        System.out.println("Best configuration was " + bestConfiguration + " which cleared " + mostRowsCleared + ".");
+        System.out.println(seconds + " seconds.");
 
-        System.out.println(seconds);
     }
 
-    void
-    cull(ArrayList<double[]> population) {
+    void cull(ArrayList<double[]> population) {
 
         for (int i = 0; i < 100; i++) {
 
@@ -123,7 +114,7 @@ public class GeneticTrainer extends Trainer {
     }
 
 
-    double[] reproduce(double[] parent1, double[] parent2) {
+/*    double[] reproduce(double[] parent1, double[] parent2) {
         double[] child = new double[6];
         double weight1 = parent1[5] / (parent1[5] + parent2[5]);
         double weight2 = parent2[5] / (parent1[5] + parent2[5]);
@@ -131,6 +122,32 @@ public class GeneticTrainer extends Trainer {
         for (int i = 0; i < 5; i++) {
 
             child[i] = parent1[i] * weight1 + parent2[i] * weight2;
+        }
+
+     *//*   try {
+            fw.write((child[0] + " " + child[1] + " " + child[2] + " " + child[3] + " " + child[4] + " " +
+                    child[5]) + "\r\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*//*
+
+        return child;
+    }*/
+
+    double[] reproduce(double[] parent1, double[] parent2) {
+        double[] child = new double[6];
+
+        Random r = new Random();
+        int j = r.nextInt(5);
+
+        for (int i = 0; i < 5; i++) {
+
+            if (i < j)
+                child[i] = parent1[i];
+
+            else
+                child[i] = parent2[i];
+
         }
 
      /*   try {
@@ -161,15 +178,14 @@ public class GeneticTrainer extends Trainer {
             }
 
         }
-        try {
-
+/*        try {
             double[] selected = population.get(maxIndex);
             fw.write("Parent chosen: " + maxIndex + "\r\n");
-  /*          fw.write(selected[0] + " " + selected[1] + " " + selected[2] + " " + selected[3] + " "
-                    + selected[4] + " " + selected[5] + "\r\n");*/
+           fw.write(selected[0] + " " + selected[1] + " " + selected[2] + " " + selected[3] + " "
+                    + selected[4] + " " + selected[5] + "\r\n");
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return population.get(maxIndex);
 
@@ -203,13 +219,13 @@ public class GeneticTrainer extends Trainer {
 
         int temp = 0;
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             Heuristics.setWeights(weights[0], weights[1], weights[2], weights[3]);
 
             temp += simulateConfiguration(weights[0], weights[1], weights[2], weights[3]);
         }
 
-        weights[5] = temp / 2.0;
+        weights[5] = temp / 3.0;
 
         totalScore += weights[5];
 
