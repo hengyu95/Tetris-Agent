@@ -33,14 +33,14 @@ public class GeneticTrainer extends Trainer {
 
         Random r = new Random();
 
-        for (int i = 0; i < 300; i++) {
+        for (int i = 0; i < 300; i++) {     //initial population of 300
             double[] array = new double[6];
 
             for (int j = 0; j < 4; j++) {
-                array[j] = r.nextDouble() * 10 - 10;      //random values from -10 to 10
+                array[j] = r.nextDouble() * 20 - 10;      //random values from -10 to 10
             }
 
-            array[4] = -100000000;
+            array[4] = -100000000;  //if move leads to lost it's awful don't do it
 
             population.add(array);
         }
@@ -54,9 +54,9 @@ public class GeneticTrainer extends Trainer {
         while (mostRowsCleared < 10000) {
             double[] parent1 = randomSelection(startingWeights);
             double[] parent2 = randomSelection(startingWeights);
-            double[] child = reproduce(parent1, parent2);
+            double[] child = reproduce2(parent1, parent2);
 
-            if (r.nextDouble() <= 0.05) {
+            if (r.nextDouble() <= 0.05) {         //5% chance of mutating
                 mutate(child);
             }
 
@@ -82,7 +82,7 @@ public class GeneticTrainer extends Trainer {
 
     void cull(ArrayList<double[]> population) {
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {    //probably there's a much more efficient way to do this
 
             double minScore = Integer.MAX_VALUE;
             int minIndex = -1;
@@ -93,9 +93,10 @@ public class GeneticTrainer extends Trainer {
                     minScore = selected[5];
                     minIndex = j;
                 }
+
             }
 
-            population.remove(minIndex);
+            population.remove(minIndex);       //kill lowest scorers of the population :(
         }
 
 
@@ -112,7 +113,7 @@ public class GeneticTrainer extends Trainer {
     }
 
 
-/*    double[] reproduce(double[] parent1, double[] parent2) {
+    double[] reproduce2(double[] parent1, double[] parent2) {    //child gets weighted averaged values from parents
         double[] child = new double[6];
         double weight1 = parent1[5] / (parent1[5] + parent2[5]);
         double weight2 = parent2[5] / (parent1[5] + parent2[5]);
@@ -122,17 +123,10 @@ public class GeneticTrainer extends Trainer {
             child[i] = parent1[i] * weight1 + parent2[i] * weight2;
         }
 
-     *//*   try {
-            fw.write((child[0] + " " + child[1] + " " + child[2] + " " + child[3] + " " + child[4] + " " +
-                    child[5]) + "\r\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*//*
-
         return child;
-    }*/
+    }
 
-    double[] reproduce(double[] parent1, double[] parent2) {
+    double[] reproduce(double[] parent1, double[] parent2) {      //crossover like in AIMA textbook
         double[] child = new double[6];
 
         Random r = new Random();
@@ -165,13 +159,13 @@ public class GeneticTrainer extends Trainer {
         double maxScore = 0;
         int maxIndex = 0;
 
-        for (int i = 0; i < 0.1 * (population.size()); i++) {
+        for (int i = 0; i < 0.1 * (population.size()); i++) {               //randomly select 10% members of the population
 
             int select = r.nextInt(population.size());
             double[] selected = population.get(select);
 
             if (selected[5] > maxScore) {
-                maxScore = selected[5];
+                maxScore = selected[5];      //highest average score guy gets chosen
                 maxIndex = select;
             }
 
@@ -193,20 +187,21 @@ public class GeneticTrainer extends Trainer {
     public void getFitness(double[] weights) throws IOException {
 
         int temp = 0;
+        Heuristics.setWeights(weights[0], weights[1], weights[2], weights[3]);
 
-        for (int i = 0; i < 3; i++) {
-            Heuristics.setWeights(weights[0], weights[1], weights[2], weights[3]);
-
+        for (int i = 0; i < 50; i++) { //average 20 times of number of rows cleared
             temp += simulateConfiguration(weights[0], weights[1], weights[2], weights[3]);
         }
 
-        weights[5] = temp / 3.0;
+        weights[5] = temp / 50.0;
 
         totalScore += weights[5];
 
         try {
 
-            fw.write(weights[5] + " " + index + " " + mostRowsCleared + "\r\n");
+            fw.write(weights[5] + " " + index + " " + mostRowsCleared + "\r\n"); //write results to results.txt
+            fw.write("Weights are: " + weights[0] + " " + weights[1] + " " + weights[2] + " " + weights[3] + " "
+                    + weights[4] + "\r\n");
             index++;
             fw.flush();
         } catch (IOException e) {
