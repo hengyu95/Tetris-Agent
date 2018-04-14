@@ -51,7 +51,7 @@ public class GeneticTrainer extends Trainer {
 
         Random r = new Random();
 
-        while (mostRowsCleared < 10000) {
+        while (mostRowsCleared < 50000) {
             double[] parent1 = randomSelection(startingWeights);
             double[] parent2 = randomSelection(startingWeights);
             double[] child = reproduce2(parent1, parent2);
