@@ -27,7 +27,7 @@ public class PlayGame implements Callable<Double> {
      * stores the score/performance for each game so that we can later sort and retrieve the median, min, max etc.
      */
     private double[] scores = new double[NUM_GAMES_TO_AVERAGE];
-    public static int NUM_GAMES_TO_AVERAGE = 30;
+    public static int NUM_GAMES_TO_AVERAGE = 1;
 
     private Random rand = new Random();
 
@@ -96,7 +96,7 @@ public class PlayGame implements Callable<Double> {
             if (useStatistics)
                 scores[i] = getComprehensiveUtility();
             else
-                scores[i] = s.getRowsCleared();
+                return (double) s.getRowsCleared();
         }
 
         Arrays.sort(scores);
