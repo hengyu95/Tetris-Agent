@@ -1,6 +1,13 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * A class to test the weights given by playing the game multiple times and retrieve the average score.
@@ -11,11 +18,15 @@ public class TestWeights {
     private static ExecutorService es;
     private static ArrayList<Callable<Double>> tasks;
     private static int NUM_GAMES_TO_PLAY = 50;
+    static File file = new File("C:\\Users\\Hengyu\\Dropbox\\results\\testWeights\\", "results.txt");
+    static FileWriter fw;
+
 
     // set the weights to test here!
-    private static double[] weights = { -0.66815299 , -0.18275129 , -0.00313774 , -0.61375989 , -0.10106387 , -0.26484914 , -0.09336810 , -0.23320790 };
+    private static double[] weights = {-12.32740332, -6.485847315, -0.150227959, -7.55674893, -1.835161079, -6.166983091, -1.109461104, -4.509427816};
 
-    public static void main (String[] args) throws InterruptedException, ExecutionException {
+
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         NUM_THREADS = Runtime.getRuntime().availableProcessors();
         System.out.println("# processors available = " + NUM_THREADS);
         es = Executors.newFixedThreadPool(NUM_THREADS);
@@ -30,11 +41,21 @@ public class TestWeights {
 
         double average = 0;
         List<Future<Double>> results = es.invokeAll(tasks);
-        for (Future<Double> result: results) {
+        for (Future<Double> result : results) {
             average += result.get();
         }
 
         Debug.printRed("Average score = " + average / NUM_GAMES_TO_PLAY + " over " + NUM_GAMES_TO_PLAY + " games");
+
+
+        try {
+            fw = new FileWriter(file, true);
+            fw.write(weights + "\r\n");
+            fw.write("Average score = " + average / NUM_GAMES_TO_PLAY + " over " + NUM_GAMES_TO_PLAY + " games\r\n");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.exit(0);
     }
 }

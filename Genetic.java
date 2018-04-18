@@ -22,6 +22,7 @@ public class Genetic {
 
     FileWriter fw;
 
+
     private static final int NUM_FEATURES = StateSimulator2.NUM_FEATURES;
 
     static double bestPerf = 0;
