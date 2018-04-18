@@ -17,7 +17,7 @@ public class TestWeights {
     public static String WEIGHTS_RESULT_FILE = "TestWeights.out";
 
     // set the weights to test here!
-    private static double[] weights = {-0.41253368, -0.19708301, -0.00863855, -0.74445169, -0.10845239, -0.38149603, -0.01316676, -0.28145480};
+    private static double[] weights = { -0.32488874 , -0.54299503 , -0.01578393 , -0.58728519 , -0.16391705 , -0.39038268 , -0.04095485 , -0.27111979 };
 
     private static void writeToFile(double average) throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(System.currentTimeMillis() + WEIGHTS_RESULT_FILE));
