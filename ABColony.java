@@ -37,7 +37,8 @@ public class ABColony {
     /**
      * The number of cycles for foraging (i.e. till stopping the algorithm). 500 is obtained from research
      */
-    public static final int MAX_CYCLE = 500;
+    public static final int MAX_CYCLE = 50000;
+
 
     /**
      * File storage related parameters.
@@ -110,7 +111,7 @@ public class ABColony {
         colony.initializeFoodSources();
         colony.memorizeBestSource();
         printResult(colony);
-        PlayGame.setLevel(3);
+        PlayGame.setLevel(2);
         for (int i = 1; i < MAX_CYCLE; i++) {
             colony.sendEmployedBees();
             colony.sendOnlookerBees();

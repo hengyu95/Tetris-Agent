@@ -17,11 +17,11 @@ public class TestWeights {
     public static String WEIGHTS_RESULT_FILE = "TestWeights.out";
 
     // set the weights to test here!
-    private static double[] weights = { -0.32488874 , -0.54299503 , -0.01578393 , -0.58728519 , -0.16391705 , -0.39038268 , -0.04095485 , -0.27111979 };
+    private static double[] weights = {-0.4125336811502633, -0.19708300978556303, -0.008638552131204649, -0.7444516864364507, -0.10845238941335847, -0.3814960308592788, -0.013166755105939301, -0.28145480166202064 };
 
     private static void writeToFile(double average) throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(System.currentTimeMillis() + WEIGHTS_RESULT_FILE));
-        bw.write(average + "\n");
+        bw.write(average / NUM_GAMES_TO_PLAY  + "\n");
 
         for (double weight : weights) {
             bw.write(Double.toString(weight) + " ");
@@ -38,7 +38,7 @@ public class TestWeights {
         es = Executors.newFixedThreadPool(NUM_THREADS);
 
         PlayGame.NUM_GAMES_TO_AVERAGE = 1; // only run one game per thread since we are running each game concurrently
-        PlayGame.setLevel(1); // usual difficulty
+        PlayGame.setLevel(2); // usual difficulty
 
         tasks = new ArrayList<>(NUM_GAMES_TO_PLAY);
 
